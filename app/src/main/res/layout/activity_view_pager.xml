@@ -1,0 +1,29 @@
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:weightSum="1">
+
+
+    <android.support.v4.view.ViewPager
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/vp_gallery"
+        android:layout_width="match_parent"
+        android:layout_height="467dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="New Text"
+        android:id="@+id/textView"
+        android:layout_weight="1.42" />
+
+
+</LinearLayout>
+
+
+
+
