@@ -169,7 +169,7 @@ import static android.Manifest.permission.READ_CONTACTS;
 
 public class ViewPagerActivity extends AppCompatActivity {
     List<String> pagesStr = new ArrayList<String>();
-    private String ID = "NNL_ALEPH002609135";
+    private String ID = "NNL_ALEPH003157499";
     private ViewItemTask mAuthTask = null;
     int i = 0;
     int j = 0;
@@ -190,8 +190,6 @@ public class ViewPagerActivity extends AppCompatActivity {
        // ID = intent.getStringExtra("recordID");
         mAuthTask = new ViewItemTask(ID);
         mAuthTask.execute((Void) null);
-        vpGallery = (ViewPager) findViewById(R.id.vp_gallery);
-        vpGallery.setAdapter(new GalleryAdapter(pagesStr));
 
 
     }
@@ -225,7 +223,7 @@ public class ViewPagerActivity extends AppCompatActivity {
 
             try {
                 final String SERVER_BASE_URL =
-                        "http://iiif.nli.org.il/IIIF/DOCID/NNL_ALEPH002484856/manifest";
+                        "http://iiif.nli.org.il/IIIF/DOCID/NNL_ALEPH003157499/manifest";
                 //TODO: change according to the server function format
 //               final String ID_PARAM = "recordID";
 //
@@ -236,7 +234,7 @@ public class ViewPagerActivity extends AppCompatActivity {
 //                URL url = new URL(builtUri.toString());
 //
 
-               // Log.v("URL", builtUri.toString());
+                // Log.v("URL", builtUri.toString());
                 URL url = new URL(SERVER_BASE_URL);
                 //Log.v("URL", builtUri.toString());
                 urlConnection = (HttpURLConnection) url.openConnection();
@@ -298,40 +296,49 @@ public class ViewPagerActivity extends AppCompatActivity {
         }
 
 
-    }
+        protected void onPostExecute(final JSONObject success) {
+            JSONArray pages=null;
 
-    protected void onPostExecute(final JSONObject success) throws JSONException {
+            JSONArray pages3 = null;
+            try {
+                pages3 = success.getJSONArray("structures");
 
-        JSONArray pages3 = success.getJSONArray("structures");
-        JSONObject page2=pages3.getJSONObject(0);
-       JSONArray pages=page2.getJSONArray("canvases");
+                JSONObject page2 = pages3.getJSONObject(0);
+                 pages = page2.getJSONArray("canvases");
 
-       // JSONObject object = pages.getJSONObject(0);
-        //JSONObject object1 = pages.getJSONObject(pages.length() - 1);
+                // JSONObject object = pages.getJSONObject(0);
+                //JSONObject object1 = pages.getJSONObject(pages.length() - 1);
 
+            String first = "http://iiif.nli.org.il/IIIF/";
+            String last = "/full/250,/0/default.jpg";
+            String tmp = "";
+            for (int i = 0; i < pages.length(); i++) {
 
-        String first = "http://iiif.nli.org.il/IIIF/";
-        String last = "full/250,/0/default.jpg";
-        String tmp = "";
-        for (int i = 0; i < pages.length(); i++) {
-            JSONObject object2 = pages.getJSONObject(i);
-            tmp = first + object2.toString() + last;
-            pagesStr.add(tmp);
+                String  book = pages.getString(i);
+                tmp = first +book + last;
+                pagesStr.add(tmp);
+                Log.e("EMIL",tmp);
+            }
+            // ViewPagerActivity.GalleryAdapter(pagesStr);
+
+            // Intent intent=new Intent(getApplicationContext(),ViewPagerActivity.class);
+            // startActivity(intent);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            vpGallery = (ViewPager) findViewById(R.id.vp_gallery);
+            vpGallery.setAdapter(new GalleryAdapter(pagesStr));
         }
-        // ViewPagerActivity.GalleryAdapter(pagesStr);
 
-        // Intent intent=new Intent(getApplicationContext(),ViewPagerActivity.class);
-        // startActivity(intent);
 
+        protected void onCancelled() {
+            mAuthTask = null;
+            //   showProgress(false);
+        }
 
     }
-
-    protected void onCancelled() {
-        mAuthTask = null;
-        //   showProgress(false);
-    }
-
-
 
     class GalleryAdapter extends PagerAdapter {
 
