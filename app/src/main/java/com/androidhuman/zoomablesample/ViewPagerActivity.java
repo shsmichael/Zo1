@@ -397,6 +397,7 @@ public class ViewPagerActivity extends AppCompatActivity {
 
 
 
+
             GenericDraweeHierarchy hierarchy =
                     new GenericDraweeHierarchyBuilder(container.getResources())
                             .setActualImageScaleType(ScalingUtils.ScaleType.FIT_CENTER)
