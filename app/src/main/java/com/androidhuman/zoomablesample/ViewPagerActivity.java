@@ -187,7 +187,7 @@ public class ViewPagerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_view_pager);
 
         Intent intent = getIntent();
-        ID = intent.getStringExtra("recordID");
+       // ID = intent.getStringExtra("recordID");
         mAuthTask = new ViewItemTask(ID);
         mAuthTask.execute((Void) null);
         vpGallery = (ViewPager) findViewById(R.id.vp_gallery);
@@ -225,16 +225,20 @@ public class ViewPagerActivity extends AppCompatActivity {
 
             try {
                 final String SERVER_BASE_URL =
-                        "http://52.29.110.203:8080/LibArab/signIn/doSignIn?";
+                        "http://iiif.nli.org.il/IIIF/DOCID/NNL_ALEPH002484856/manifest";
                 //TODO: change according to the server function format
-                final String ID_PARAM = "recordID";
+//               final String ID_PARAM = "recordID";
+//
+//                Uri builtUri = Uri.parse(SERVER_BASE_URL).buildUpon()
+//                        .appendQueryParameter(ID_PARAM, bookId)
+//                        .build();
+//
+//                URL url = new URL(builtUri.toString());
+//
 
-                Uri builtUri = Uri.parse(SERVER_BASE_URL).buildUpon()
-                        .appendQueryParameter(ID_PARAM, bookId)
-                        .build();
-
-                URL url = new URL(builtUri.toString());
-                Log.v("URL", builtUri.toString());
+               // Log.v("URL", builtUri.toString());
+                URL url = new URL(SERVER_BASE_URL);
+                //Log.v("URL", builtUri.toString());
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.connect();
 
@@ -260,7 +264,7 @@ public class ViewPagerActivity extends AppCompatActivity {
                 }
 
                 serverJsonStr = buffer.toString();
-                Log.d("PROBLEM", serverJsonStr);
+                Log.e("PROBLEM", serverJsonStr);
 
             } catch (IOException e) {
                 Log.e("LOGE", "Error ", e);
